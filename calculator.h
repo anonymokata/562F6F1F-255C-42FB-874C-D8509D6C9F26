@@ -71,7 +71,7 @@ char* add(char* num1, char* num2)
 	char* result = (char *)malloc(len1+len2+1);
 	int i = 0, j = 0, k = 0;
 	
-	//in order to pass test 1, reorder each charater from both inputs according to its corresponding decimal number
+	//in order to pass test 1, reorder each charater from both inputs according to its corresponding decimal number from largest to smallest
 	while(i < len1){
 		while(j < len2){
 			if(convertToInt(num1[i]) > convertToInt(num2[j])){
@@ -223,5 +223,20 @@ char* add(char* num1, char* num2)
 	}
 	
 	printf("%s + %s = %s\n", num1, num2, result);
+	return result;
+}
+
+//Inputs: num1, num2
+//result = num1 - num2
+char* sub(char* num1, char* num2)
+{
+	int len1 = strlen(num1);
+	int len2 = strlen(num2);
+	char* result = (char *)malloc(len1+len2+1);
+	
+	strcpy(result, num1);
+	result[len1-len2] = '\0';
+	
+	printf("%s - %s = %s\n", num1, num2, result);
 	return result;
 }

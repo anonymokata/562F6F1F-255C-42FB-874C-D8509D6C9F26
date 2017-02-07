@@ -3,6 +3,7 @@
 
 int main()
 {
+	//addition tests
 	//test 1: numerals can be concatenated to form a larger numeral
 	assert(!strcmp(add("XIV", "LX"), "LXXIV"));
 	assert(!strcmp(add("XX", "II"), "XXII"));
@@ -27,6 +28,13 @@ int main()
 	assert(!strcmp(add("XIV", "VII"), "XXI"));
 	assert(!strcmp(add("XXII", "XXIII"), "XLV"));
 	assert(!strcmp(add("XXXIV", "XV"), "XLIX"));
+	
+	//substraction tests
+	//test1: subtrahend appears to be the same as smaller part of minuend
+	assert(!strcmp(sub("II", "I"), "I"));
+	assert(!strcmp(sub("VII", "II"), "V"));
+	//assert(!strcmp(sub("XX", "II"), "XXII"));
+	//assert(!strcmp(sub("I", "I"), "II"));
 	
 	return 0;
 }
