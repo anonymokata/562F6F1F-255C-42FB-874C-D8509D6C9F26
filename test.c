@@ -28,6 +28,7 @@ int main()
 	assert(!strcmp(add("XIV", "VII"), "XXI"));
 	assert(!strcmp(add("XXII", "XXIII"), "XLV"));
 	assert(!strcmp(add("XXXIV", "XV"), "XLIX"));
+	assert(!strcmp(add("XXXIV", "LXVI"), "C"));
 	
 	//substraction tests
 	//test 1: subtrahend appears to be the same as smaller part of minuend
@@ -42,8 +43,17 @@ int main()
 	assert(!strcmp(sub("V", "II"), "III"));
 	assert(!strcmp(sub("XII", "VII"), "V"));
 	
-	//test 4: 
-	//assert(!strcmp(sub("XX", "II"), "XXII"));
+	//test 4: there are some situations that a lesser numeral put before a bigger numeral
+	assert(!strcmp(sub("IV", "II"), "II"));
+	assert(!strcmp(sub("XC", "X"), "LXXX"));
+	assert(!strcmp(sub("XVIII", "IX"), "IX"));
+	
+	//test 5: general tests
+	assert(!strcmp(sub("XX", "V"), "XV"));
+	assert(!strcmp(sub("XXIX", "XVIII"), "XI"));
+	assert(!strcmp(sub("C", "LXVI"), "XXXIV"));
+	assert(!strcmp(sub("LIV", "X"), "XLIV"));
+	assert(!strcmp(sub("MCLXXIIII", "CXXXVIIII"), "MXXXV"));
 	
 	return 0;
 }
