@@ -59,6 +59,7 @@ char* add(char* num1, char* num2)
 	char* result = (char *)malloc(len1+len2+1);
 	int i = 0, j = 0, k = 0;
 	
+	//in order to pass test 1, reorder each charater from both inputs according to its corresponding decimal number
 	while(i < len1){
 		while(j < len2){
 			if(convertToInt(num1[i]) > convertToInt(num2[j])){
@@ -78,6 +79,7 @@ char* add(char* num1, char* num2)
 	
 	printf("inter result: %s\n", result);
 	
+	//test2: if I, X or C happened more than three times, replace the repeated letters with its correct roman numerals
 	int index = len1+len2-1;
 	int count = countFromTail(result, 'I', &index);
 	//printf("count: %d, index: %d\n", count, index);
@@ -136,6 +138,38 @@ char* add(char* num1, char* num2)
 			result[index+1] = 'C';
 			for(i = index+6; i < (len1+len2+1); i++){
 				result[i-4] = result[i];
+			}
+		}
+	}
+	
+	//test 3: if V, L or D happened more than once, replace the repeated letters with its correct roman numerals
+	index = len1+len2-1;
+	count = countFromTail(result, 'V', &index);
+	if(count > 1){
+		if(count == 2){
+			result[index] = 'X';
+			for(i = index+2; i < (len1+len2+1); i++){
+				result[i-1] = result[i];
+			}
+		}
+	}
+	
+	count = countFromTail(result, 'L', &index);
+	if(count > 1){
+		if(count == 2){
+			result[index] = 'C';
+			for(i = index+2; i < (len1+len2+1); i++){
+				result[i-1] = result[i];
+			}
+		}
+	}
+	
+	count = countFromTail(result, 'D', &index);
+	if(count > 1){
+		if(count == 2){
+			result[index] = 'M';
+			for(i = index+2; i < (len1+len2+1); i++){
+				result[i-1] = result[i];
 			}
 		}
 	}

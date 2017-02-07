@@ -12,5 +12,9 @@ int main()
 	assert(!strcmp(add("II", "II"), "IV"));
 	assert(!strcmp(add("XXI", "XXI"), "XLII"));
 	
+	//test 3: can not have more than one V, L or D
+	assert(!strcmp(add("D", "D"), "M"));
+	assert(!strcmp(add("V", "VI"), "XI"));
+	
 	return 0;
 }
