@@ -37,6 +37,12 @@ int main()
 	//test 2: subtrahend is same to some part of minuend
 	assert(!strcmp(sub("LXXV", "XX"), "LV"));
 	assert(!strcmp(sub("LXXVII", "XI"), "LXVI"));
+	
+	//test 3: subtrahend has some letters no letters that are not in minuend
+	assert(!strcmp(sub("V", "II"), "III"));
+	assert(!strcmp(sub("XII", "VII"), "V"));
+	
+	//test 4: 
 	//assert(!strcmp(sub("XX", "II"), "XXII"));
 	
 	return 0;

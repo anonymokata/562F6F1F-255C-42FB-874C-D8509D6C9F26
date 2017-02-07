@@ -233,17 +233,42 @@ char* sub(char* num1, char* num2)
 	int len1 = strlen(num1);
 	int len2 = strlen(num2);
 	char* result = (char *)malloc(len1+len2+1);
+	char* temp = (char *)malloc(len2+1);
+	strcpy(result, num1);
+	strcpy(temp, num2);
 	
-	int i, j = 0, k = 0;
+	//test 1 and 2: subtrahend can be found in minuend
+	//delete those letters in common
+	int i, j, k;
 	for(i = 0; i < len1; i++){
-		if(num1[i] != num2[j]){
-			result[k] = num1[i];
-			k++;
-		} else {
-			j++;
+		for(j = 0; j < len2; j++){
+			if(result[i] == temp[j]){
+				//printf("i: %d, j: %d\n", i, j);
+				for(k = i+1; k < (len1+1); k++){
+					//printf("k: %d\n", k);
+					//printf("put: %c\n", num1[k]);
+					result[k-1] = result[k];
+				}
+				len1--;
+				i--;
+				for(k = j+1; k < (len2+1); k++){
+					temp[k-1] = temp[k];
+				}
+				len2--;
+				break;
+			}
 		}
 	}
-	result[k] = '\0';
+	
+	printf("inter result: %s\n", result);
+	
+	//test 3: after delete some letters in common, rewrite the larger symbol in terms of smaller symbol, then cross out all letters in common
+	if(len2 > 0){
+		int howMany = convertToInt(num1[len1-1]) / convertToInt(num2[0]);
+		for(i = 0; i < (howMany-len2); i++){
+			result[len1-1+i] = num2[0];
+		}
+	}
 	
 	printf("%s - %s = %s\n", num1, num2, result);
 	return result;
