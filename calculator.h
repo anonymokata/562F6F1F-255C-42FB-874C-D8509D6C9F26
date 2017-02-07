@@ -52,6 +52,18 @@ int countFromTail(char* input, char c, int *start)
 	return count;
 }
 
+bool findLessBeforeBig(char* input, int len, int* mark){
+	int i;
+	for(i = 0; i < (len-1); i++){
+		if(convertToInt(input[i]) < convertToInt(input[i+1])){
+			*mark = i;
+			return true;
+		}
+	}
+	
+	return false;
+}
+
 char* add(char* num1, char* num2)
 {
 	int len1 = strlen(num1);
@@ -79,8 +91,33 @@ char* add(char* num1, char* num2)
 	
 	printf("inter result: %s\n", result);
 	
+	//test 4:
+	int mark, length = len1+len2;
+	if(findLessBeforeBig(result, length, &mark)){
+		if(result[mark] == result[mark-1]){
+			for(i = mark+1; i < (length+1); i++){
+				result[i-2] = result[i];
+			}
+			length = len1+len2-2;
+		} else if(result[mark+1] == result[mark-1]){
+			char temp = result[mark];
+			result[mark] = result[mark-1];
+			result[mark-1] = temp;
+		}
+	}
+	mark = 0;
+	if(findLessBeforeBig(result, length, &mark)){
+		if(result[mark+1] == result[mark-1]){
+			char temp = result[mark];
+			result[mark] = result[mark+1];
+			result[mark+1] = temp;
+		}
+	}
+	
+	printf("inter result after: %s\n", result);
+	
 	//test2: if I, X or C happened more than three times, replace the repeated letters with its correct roman numerals
-	int index = len1+len2-1;
+	int index = length-1;
 	int count = countFromTail(result, 'I', &index);
 	//printf("count: %d, index: %d\n", count, index);
 	if(count > 3){
@@ -88,13 +125,16 @@ char* add(char* num1, char* num2)
 			result[index] = 'I';
 			result[index+1] = 'V';
 			result[index+2] = '\0';
+			length -= 2;
 		} else if(count == 5){
 			result[index] = 'V';
 			result[index+1] = '\0';
+			length -= 4;
 		} else if(count == 6){
 			result[index] = 'V';
 			result[index+1] = 'I';
 			result[index+2] = '\0';
+			length -= 4;
 		}
 	}
 	
@@ -103,20 +143,23 @@ char* add(char* num1, char* num2)
 		if(count == 4){
 			result[index] = 'X';
 			result[index+1] = 'L';
-			for(i = index+4; i < (len1+len2+1); i++){
+			for(i = index+4; i < (length+1); i++){
 				result[i-2] = result[i];
 			}
+			length -= 2;
 		} else if(count == 5){
 			result[index] = 'L';
-			for(i = index+5; i < (len1+len2+1); i++){
+			for(i = index+5; i < (length+1); i++){
 				result[i-4] = result[i];
 			}
+			length -= 4;
 		} else if(count == 6){
 			result[index] = 'L';
 			result[index+1] = 'X';
-			for(i = index+6; i < (len1+len2+1); i++){
+			for(i = index+6; i < (length+1); i++){
 				result[i-4] = result[i];
 			}
+			length -= 4;
 		}
 	}
 	
@@ -125,30 +168,35 @@ char* add(char* num1, char* num2)
 		if(count == 4){
 			result[index] = 'C';
 			result[index+1] = 'D';
-			for(i = index+4; i < (len1+len2+1); i++){
+			for(i = index+4; i < (length+1); i++){
 				result[i-2] = result[i];
 			}
+			length -= 2;
 		} else if(count == 5){
 			result[index] = 'D';
-			for(i = index+5; i < (len1+len2+1); i++){
+			for(i = index+5; i < (length+1); i++){
 				result[i-4] = result[i];
 			}
+			length -= 4;
 		} else if(count == 6){
 			result[index] = 'D';
 			result[index+1] = 'C';
-			for(i = index+6; i < (len1+len2+1); i++){
+			for(i = index+6; i < (length+1); i++){
 				result[i-4] = result[i];
 			}
+			length -= 4;
 		}
 	}
 	
+	printf("inter result after: %s\n", result);
+	
 	//test 3: if V, L or D happened more than once, replace the repeated letters with its correct roman numerals
-	index = len1+len2-1;
+	index = length-1;
 	count = countFromTail(result, 'V', &index);
 	if(count > 1){
 		if(count == 2){
 			result[index] = 'X';
-			for(i = index+2; i < (len1+len2+1); i++){
+			for(i = index+2; i < (length+1); i++){
 				result[i-1] = result[i];
 			}
 		}
@@ -158,7 +206,7 @@ char* add(char* num1, char* num2)
 	if(count > 1){
 		if(count == 2){
 			result[index] = 'C';
-			for(i = index+2; i < (len1+len2+1); i++){
+			for(i = index+2; i < (length+1); i++){
 				result[i-1] = result[i];
 			}
 		}
@@ -168,7 +216,7 @@ char* add(char* num1, char* num2)
 	if(count > 1){
 		if(count == 2){
 			result[index] = 'M';
-			for(i = index+2; i < (len1+len2+1); i++){
+			for(i = index+2; i < (length+1); i++){
 				result[i-1] = result[i];
 			}
 		}

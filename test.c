@@ -16,5 +16,17 @@ int main()
 	assert(!strcmp(add("D", "D"), "M"));
 	assert(!strcmp(add("V", "VI"), "XI"));
 	
+	//test 4: a lesser numeral can be put before a bigger numeral, which means subtraction of the lesser from the bigger
+	assert(!strcmp(add("IV", "VI"), "X"));
+	assert(!strcmp(add("IV", "V"), "IX"));
+	assert(!strcmp(add("IV", "I"), "V"));
+	
+	//test 5: general tests
+	assert(!strcmp(add("XLV", "I"), "XLVI"));
+	assert(!strcmp(add("IV", "VII"), "XI"));
+	assert(!strcmp(add("XIV", "VII"), "XXI"));
+	assert(!strcmp(add("XXII", "XXIII"), "XLV"));
+	assert(!strcmp(add("XXXIV", "XV"), "XLIX"));
+	
 	return 0;
 }
