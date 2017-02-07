@@ -30,11 +30,14 @@ int main()
 	assert(!strcmp(add("XXXIV", "XV"), "XLIX"));
 	
 	//substraction tests
-	//test1: subtrahend appears to be the same as smaller part of minuend
+	//test 1: subtrahend appears to be the same as smaller part of minuend
 	assert(!strcmp(sub("II", "I"), "I"));
 	assert(!strcmp(sub("VII", "II"), "V"));
+	
+	//test 2: subtrahend is same to some part of minuend
+	assert(!strcmp(sub("LXXV", "XX"), "LV"));
+	assert(!strcmp(sub("LXXVII", "XI"), "LXVI"));
 	//assert(!strcmp(sub("XX", "II"), "XXII"));
-	//assert(!strcmp(sub("I", "I"), "II"));
 	
 	return 0;
 }

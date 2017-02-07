@@ -234,8 +234,16 @@ char* sub(char* num1, char* num2)
 	int len2 = strlen(num2);
 	char* result = (char *)malloc(len1+len2+1);
 	
-	strcpy(result, num1);
-	result[len1-len2] = '\0';
+	int i, j = 0, k = 0;
+	for(i = 0; i < len1; i++){
+		if(num1[i] != num2[j]){
+			result[k] = num1[i];
+			k++;
+		} else {
+			j++;
+		}
+	}
+	result[k] = '\0';
 	
 	printf("%s - %s = %s\n", num1, num2, result);
 	return result;
