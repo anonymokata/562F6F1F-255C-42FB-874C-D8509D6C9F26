@@ -1,38 +1,143 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 int convertToInt(char c)
 {
-	int dec = 0;
 	if(c == 'I'){
-		dec = 1;
+		return 1;
 	} else if(c == 'V'){
-		dec = 5;
+		return 5;
 	} else if(c == 'X' ){
-		dec = 10;
+		return 10;
 	} else if(c == 'L'){
-		dec = 50;
+		return 50;
 	} else if(c == 'C'){
-		dec = 100;
+		return 100;
 	} else if(c == 'D'){
-		dec = 500;
+		return 500;
 	} else if(c == 'M'){
-		dec = 1000;
+		return 1000;
+	} else {
+		return 0;
+	}
+}
+
+int countFromTail(char* input, char c, int *start)
+{
+	int i, count = 0;
+	bool flag = false;
+	
+	if(c == 'I' && c != input[*start]){
+		return count;
 	}
 	
-	return dec;
+	for(i = *start; i >=0; i--){
+		if(input[i] == c){
+			flag = true;
+			count++;
+		}
+		if(input[i] != c && flag){
+			*start = i+1;
+			flag = false;
+			break;
+		}
+	}
+	
+	if(flag){
+		*start = 0;
+	}
+	
+	return count;
 }
 
 char* add(char* num1, char* num2)
 {
-	char* result = (char *)malloc(strlen(num1)+strlen(num2)+1);
-	if(convertToInt(num1[0]) > convertToInt(num2[0])){
-		strcpy(result, num1);
-		strcat(result, num2);
-	} else {
-		strcpy(result, num2);
-		strcat(result, num1);
+	int len1 = strlen(num1);
+	int len2 = strlen(num2);
+	char* result = (char *)malloc(len1+len2+1);
+	int i = 0, j = 0, k = 0;
+	
+	while(i < len1){
+		while(j < len2){
+			if(convertToInt(num1[i]) > convertToInt(num2[j])){
+				result[k] = num1[i];
+				k++;
+				i++;
+			} else {
+				result[k] = num2[j];
+				k++;
+				j++;
+			}
+		}
+		result[k] = num1[i];
+		k++;
+		i++;
+	}
+	
+	printf("inter result: %s\n", result);
+	
+	int index = len1+len2-1;
+	int count = countFromTail(result, 'I', &index);
+	//printf("count: %d, index: %d\n", count, index);
+	if(count > 3){
+		if(count == 4){
+			result[index] = 'I';
+			result[index+1] = 'V';
+			result[index+2] = '\0';
+		} else if(count == 5){
+			result[index] = 'V';
+			result[index+1] = '\0';
+		} else if(count == 6){
+			result[index] = 'V';
+			result[index+1] = 'I';
+			result[index+2] = '\0';
+		}
+	}
+	
+	count = countFromTail(result, 'X', &index);
+	if(count > 3){
+		if(count == 4){
+			result[index] = 'X';
+			result[index+1] = 'L';
+			for(i = index+4; i < (len1+len2+1); i++){
+				result[i-2] = result[i];
+			}
+		} else if(count == 5){
+			result[index] = 'L';
+			for(i = index+5; i < (len1+len2+1); i++){
+				result[i-4] = result[i];
+			}
+		} else if(count == 6){
+			result[index] = 'L';
+			result[index+1] = 'X';
+			for(i = index+6; i < (len1+len2+1); i++){
+				result[i-4] = result[i];
+			}
+		}
+	}
+	
+	count = countFromTail(result, 'C', &index);
+	if(count > 3){
+		if(count == 4){
+			result[index] = 'C';
+			result[index+1] = 'D';
+			for(i = index+4; i < (len1+len2+1); i++){
+				result[i-2] = result[i];
+			}
+		} else if(count == 5){
+			result[index] = 'D';
+			for(i = index+5; i < (len1+len2+1); i++){
+				result[i-4] = result[i];
+			}
+		} else if(count == 6){
+			result[index] = 'D';
+			result[index+1] = 'C';
+			for(i = index+6; i < (len1+len2+1); i++){
+				result[i-4] = result[i];
+			}
+		}
 	}
 	
 	printf("%s + %s = %s\n", num1, num2, result);
