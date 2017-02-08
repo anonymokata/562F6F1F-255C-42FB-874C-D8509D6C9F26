@@ -54,7 +54,7 @@ int main()
 	assert(!strcmp(sub("C", "LXVI"), "XXXIV"));
 	assert(!strcmp(sub("LIV", "X"), "XLIV"));
 	assert(!strcmp(sub("XLIV", "XXIV"), "XX"));
-	assert(!strcmp(sub("C", "II"), "XCVIII"));
+	assert(!strcmp(sub("M", "I"), "CMXCIX"));
 	
 	return 0;
 }

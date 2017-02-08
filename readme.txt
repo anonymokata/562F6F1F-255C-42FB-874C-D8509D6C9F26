@@ -11,6 +11,7 @@ My implementation is in calculator.h
 
 # Usage
 Include my "calculator.h" file
+call the following two functions
 	
 Functions:
 1. char* add(char* num1, char* num2)
@@ -20,7 +21,7 @@ For example:
 char* addresult = add("IV", "II");
 
 2. char* sub(char* num1, char* num2)
-This sub function takes two strings as inputs and returns you the 	subtraction result. The first numeral has to be larger than the second one.
+This sub function takes two strings as inputs and returns you the subtraction result. The first numeral has to be larger than the second one.
 
 For example:
 char* subresult = sub("IV", "II");
