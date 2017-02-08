@@ -55,9 +55,9 @@ int countFromTail(char* input, char c, int *start)
 }
 
 //This function checks if there is a situation that a lesser numeral is before a bigger numeral
-bool findLessBeforeBig(char* input, int len, int* mark){
+bool findLessBeforeBig(char* input, int len, int start, int* mark){
 	int i;
-	for(i = 0; i < (len-1); i++){
+	for(i = start; i < (len-1); i++){
 		if(convertToInt(input[i]) < convertToInt(input[i+1])){
 			*mark = i;
 			return true;
@@ -68,12 +68,14 @@ bool findLessBeforeBig(char* input, int len, int* mark){
 }
 
 //This function rewrite the array if I, X or C happened more than three or V, L or D happened more than one
-void RewriteRepeatedNemerals(int length, char* result)
+//return true if the input numeral is rewritten
+bool RewriteRepeatedNemerals(int* length, char* result)
 {
 	int i;
 	//add-test2: if I happened more than three times, replace the repeated letters with its correct roman numerals
-	int index = length-1;
+	int index = *length-1;
 	int count;
+	bool change = false;
 	while(index > 0){
 		count = countFromTail(result, 'I', &index);
 		//printf("count: %d, index: %d\n", count, index);
@@ -82,19 +84,22 @@ void RewriteRepeatedNemerals(int length, char* result)
 				result[index] = 'I';
 				result[index+1] = 'V';
 				result[index+2] = '\0';
-				length -= 2;
+				*length -= 2;
 				index -= 2;
+				change = true;
 			} else if(count == 5){
 				result[index] = 'V';
 				result[index+1] = '\0';
-				length -= 4;
+				*length -= 4;
 				index -= 4;
+				change = true;
 			} else if(count == 6){
 				result[index] = 'V';
 				result[index+1] = 'I';
 				result[index+2] = '\0';
-				length -= 4;
+				*length -= 4;
 				index -= 4;
+				change = true;
 			}
 		} else {
 			index--;
@@ -102,17 +107,18 @@ void RewriteRepeatedNemerals(int length, char* result)
 	}
 	
 	//add-test 3: if V happened more than once, replace the repeated letters with its correct roman numerals
-	index = length-1;
+	index = *length-1;
 	while(index > 0){
 		count = countFromTail(result, 'V', &index);
 		if(count > 1){
 			if(count == 2){
 				result[index] = 'X';
-				for(i = index+2; i < (length+1); i++){
+				for(i = index+2; i < (*length+1); i++){
 					result[i-1] = result[i];
 				}
-				length -= 1;
+				*length -= 1;
 				index -= 1;
+				change = true;
 			}
 		} else {
 			index--;
@@ -120,33 +126,36 @@ void RewriteRepeatedNemerals(int length, char* result)
 	}
 	
 	//add-test 2: if X happened more than three times, replace the repeated letters with its correct roman numerals
-	index = length-1;
+	index = *length-1;
 	while(index > 0){
 		count = countFromTail(result, 'X', &index);
 		if(count > 3){
 			if(count == 4){
 				result[index] = 'X';
 				result[index+1] = 'L';
-				for(i = index+4; i < (length+1); i++){
+				for(i = index+4; i < (*length+1); i++){
 					result[i-2] = result[i];
 				}
-				length -= 2;
+				*length -= 2;
 				index -= 2;
+				change = true;
 			} else if(count == 5){
 				result[index] = 'L';
-				for(i = index+5; i < (length+1); i++){
+				for(i = index+5; i < (*length+1); i++){
 					result[i-4] = result[i];
 				}
-				length -= 4;
+				*length -= 4;
 				index -= 4;
+				change = true;
 			} else if(count == 6){
 				result[index] = 'L';
 				result[index+1] = 'X';
-				for(i = index+6; i < (length+1); i++){
+				for(i = index+6; i < (*length+1); i++){
 					result[i-4] = result[i];
 				}
-				length -= 4;
+				*length -= 4;
 				index -= 4;
+				change = true;
 			}
 		} else {
 			index--;
@@ -154,17 +163,18 @@ void RewriteRepeatedNemerals(int length, char* result)
 	}
 	
 	//add-test 3: if L happened more than once, replace the repeated letters with its correct roman numerals
-	index = length-1;
+	index = *length-1;
 	while(index > 0){
 		count = countFromTail(result, 'L', &index);
 		if(count > 1){
 			if(count == 2){
 				result[index] = 'C';
-				for(i = index+2; i < (length+1); i++){
+				for(i = index+2; i < (*length+1); i++){
 					result[i-1] = result[i];
 				}
-				length -= 1;
+				*length -= 1;
 				index -= 1;
+				change = true;
 			}
 		} else {
 			index--;
@@ -172,33 +182,36 @@ void RewriteRepeatedNemerals(int length, char* result)
 	}
 	
 	//add-test 2: if C happened more than three times, replace the repeated letters with its correct roman numerals
-	index = length-1;
+	index = *length-1;
 	while(index > 0){
 		count = countFromTail(result, 'C', &index);
 		if(count > 3){
 			if(count == 4){
 				result[index] = 'C';
 				result[index+1] = 'D';
-				for(i = index+4; i < (length+1); i++){
+				for(i = index+4; i < (*length+1); i++){
 					result[i-2] = result[i];
 				}
-				length -= 2;
+				*length -= 2;
 				index -= 2;
+				change = true;
 			} else if(count == 5){
 				result[index] = 'D';
-				for(i = index+5; i < (length+1); i++){
+				for(i = index+5; i < (*length+1); i++){
 					result[i-4] = result[i];
 				}
-				length -= 4;
+				*length -= 4;
 				index -= 4;
+				change = true;
 			} else if(count == 6){
 				result[index] = 'D';
 				result[index+1] = 'C';
-				for(i = index+6; i < (length+1); i++){
+				for(i = index+6; i < (*length+1); i++){
 					result[i-4] = result[i];
 				}
-				length -= 4;
+				*length -= 4;
 				index -= 4;
+				change = true;
 			}
 		} else {
 			index--;
@@ -207,24 +220,72 @@ void RewriteRepeatedNemerals(int length, char* result)
 	
 	
 	//add-test 3: if D happened more than once, replace the repeated letters with its correct roman numerals
-	index = length-1;
+	index = *length-1;
 	while(index > 0){
 		count = countFromTail(result, 'D', &index);
 		if(count > 1){
 			if(count == 2){
 				result[index] = 'M';
-				for(i = index+2; i < (length+1); i++){
+				for(i = index+2; i < (*length+1); i++){
 					result[i-1] = result[i];
 				}
+				*length -= 1;
 				index -= 1;
+				change = true;
 			}
 		} else {
 			index--;
 		}
 	}
+	
+	return change;
 }
 
-//This is the addition function to addtwo roman numbers together
+//This function reorders certain patterns
+//return true if the input numeral is reordered
+bool reorder(char* result, int mark, int* length)
+{
+	int i, start = 0;
+	bool flag = false, change = false;
+	
+	//go through all the situations that a lesser numeral is before a bigger one
+	while(findLessBeforeBig(result, *length, start, &mark)){
+		//if something similar to "VIIIV" happened, change it to "VIV"
+		if(result[mark] == result[mark-1]){
+			for(i = mark+1; i < (*length+1); i++){
+				result[i-2] = result[i];
+			}
+			*length = *length-2;
+			flag = true;
+			change = true;
+		}
+		
+		//if the there is still a lesser numeral is before a bigger one
+		//Depend on if the above case is met, either change "VIV" to "IVV" or "VVI"
+		if(findLessBeforeBig(result, *length, start, &mark)){
+			char c;
+			if(flag){
+				if(result[mark-1] == result[mark+1]){
+					c = result[mark];
+					result[mark] = result[mark+1];
+					result[mark+1] = c;
+					change = true;
+				}
+			} else {
+				if(result[mark-1] == result[mark+1]){
+					c = result[mark];
+					result[mark] = result[mark-1];
+					result[mark-1] = c;
+					change = true;
+				}
+			}
+		}
+		start = mark + 1;
+	}
+	return change;
+}
+
+//This is the addition function to add two roman numbers together
 char* add(char* num1, char* num2)
 {
 	int len1 = strlen(num1);
@@ -250,39 +311,17 @@ char* add(char* num1, char* num2)
 		i++;
 	}
 	
-	printf("inter result order: %s\n", result);
+	//printf("inter result after order: %s\n", result);
 	
 	//add-test 4: reorder the array
 	int mark, length = len1+len2;
-	if(findLessBeforeBig(result, length, &mark)){
-		if(result[mark] == result[mark-1]){
-			for(i = mark+1; i < (length+1); i++){
-				result[i-2] = result[i];
-			}
-			length = len1+len2-2;
-		} else if(result[mark+1] == result[mark-1]){
-			char temp = result[mark];
-			result[mark] = result[mark-1];
-			result[mark-1] = temp;
-		}
-	}
-	mark = 0;
-	if(findLessBeforeBig(result, length, &mark)){
-		if(result[mark+1] == result[mark-1]){
-			char temp = result[mark];
-			result[mark] = result[mark+1];
-			result[mark+1] = temp;
-		}
-	}
 	
-	printf("inter result after reorder: %s\n", result);
+	//lastly, check if there are any repeated numerals or certain patterns that need to be reordered
+	while(reorder(result, mark, &length) || RewriteRepeatedNemerals(&length, result));
+	//printf("inter result after reorder: %s\n", result);
+	//printf("inter result after rewrite: %s\n", result);
 	
-	//add-test 2 and test 3, check repeated roman numerals
-	RewriteRepeatedNemerals(length, result);
-	
-	printf("inter result after: %s\n", result);
-	
-	printf("%s + %s = %s\n", num1, num2, result);
+	//printf("%s + %s = %s\n", num1, num2, result);
 	return result;
 }
 
@@ -311,6 +350,29 @@ void rewrite(char * result, char A, char l1, char l2, int *len, int mark)
 	}
 }
 
+//This function returns a lesser numeral of the input. For example, if 'X' is input, it will return 'V'.
+char lesserNumeral(char c)
+{
+	if(c == 'M'){
+		return 'D';
+	}
+	if(c == 'D'){
+		return 'C';
+	}
+	if(c == 'C'){
+		return 'L';
+	}
+	if(c == 'L'){
+		return 'X';
+	}
+	if(c == 'X'){
+		return 'V';
+	}
+	if(c == 'V'){
+		return 'I';
+	}
+}
+
 //Inputs: num1, num2
 //result = num1 - num2
 //This is the subtraction function to subtract a number from another
@@ -323,52 +385,56 @@ char* sub(char* num1, char* num2)
 	strcpy(result, num1);
 	strcpy(temp, num2);
 	
-	//sub-test 4: rewrite the array
-	int mark;
-	if(findLessBeforeBig(num1, len1, &mark)){
-		if(num1[mark+1] == 'V'){
+	//sub-test 4: rewrite the input numerals (if there is a lesser numeral is before a bigger numeral, rewrite it to a form of smaller numerals plus something)
+	int mark, start = 0;
+	while(findLessBeforeBig(result, len1, start, &mark)){
+		if(result[mark+1] == 'V'){
 			rewrite(result, 'V', 'I', '0', &len1, mark);
 		}
-		if(num1[mark+1] == 'X'){
+		if(result[mark+1] == 'X'){
 			rewrite(result, 'X', 'V', 'I', &len1, mark);
 		}
-		if(num1[mark+1] == 'L'){
+		if(result[mark+1] == 'L'){
 			rewrite(result, 'L', 'X', '0', &len1, mark);
 		}
-		if(num1[mark+1] == 'C'){
+		if(result[mark+1] == 'C'){
 			rewrite(result, 'C', 'L', 'X', &len1, mark);
 		}
-		if(num1[mark+1] == 'D'){
+		if(result[mark+1] == 'D'){
 			rewrite(result, 'D', 'C', '0', &len1, mark);
 		}
-		if(num1[mark+1] == 'M'){
+		if(result[mark+1] == 'M'){
 			rewrite(result, 'M', 'D', 'C', &len1, mark);
 		}
+		start = mark + 1;
 	}
 	
-	if(findLessBeforeBig(num2, len2, &mark)){
-		if(num2[mark+1] == 'V'){
+	//rewrite num2
+	start = 0;
+	while(findLessBeforeBig(temp, len2, start, &mark)){
+		if(temp[mark+1] == 'V'){
 			rewrite(temp, 'V', 'I', '0', &len2, mark);
 		}
-		if(num2[mark+1] == 'X'){
+		if(temp[mark+1] == 'X'){
 			rewrite(temp, 'X', 'V', 'I', &len2, mark);
 		}
-		if(num2[mark+1] == 'L'){
+		if(temp[mark+1] == 'L'){
 			rewrite(temp, 'L', 'X', '0', &len2, mark);
 		}
-		if(num2[mark+1] == 'C'){
+		if(temp[mark+1] == 'C'){
 			rewrite(temp, 'C', 'L', 'X', &len2, mark);
 		}
-		if(num2[mark+1] == 'D'){
+		if(temp[mark+1] == 'D'){
 			rewrite(temp, 'D', 'C', '0', &len2, mark);
 		}
-		if(num2[mark+1] == 'M'){
+		if(temp[mark+1] == 'M'){
 			rewrite(temp, 'M', 'D', 'C', &len2, mark);
 		}
+		start = mark + 1;
 	}
 	
-	printf("inter result after rewrite: %s\n", result);
-	printf("inter temp: %s\n", temp);
+	//printf("inter result after rewrite: %s\n", result);
+	//printf("inter temp: %s\n", temp);
 	
 	//sub-test 1 and 2: some subtrahend numerals can be found in minuend
 	//delete those letters in common
@@ -391,39 +457,37 @@ char* sub(char* num1, char* num2)
 			}
 		}
 		
-		printf("inter result after delete: %s\n", result);
-		printf("inter temp after delete: %s\n", temp);
+		//printf("inter result after delete: %s\n", result);
+		//printf("inter temp after delete: %s\n", temp);
 		
 		//sub-test 3: after delete some letters in common, rewrite the larger symbol in terms of smaller symbol, then cross out all letters in common
+		//repeat this procedure until the smaller numeral is empty
 		char tempC;
+		int howMany, j = 0;
 		if(len2 > 0){
-			int howMany = convertToInt(result[len1-1]) / convertToInt(temp[0]);
-			j = 0;
-			while(howMany < 1){
+			tempC = lesserNumeral(result[len1-1]);
+			howMany = convertToInt(result[len1-1]) / convertToInt(tempC);
+			while(howMany <= 1){
 				j++;
-				howMany = convertToInt(result[len1-1-j]) / convertToInt(temp[0]);
+				tempC = lesserNumeral(result[len1-1-j]);
+				howMany = convertToInt(result[len1-1-j]) / convertToInt(tempC);
 			}
-			printf("howmany: %d\n", howMany);
-			if(howMany >= 5 && len2 == 1){
-				for(k = len1+1; k > (len1-1-j); k--){
-					result[k] = result[k-1];
-				}
-				result[len1-1-j] = temp[0];
-				len1 += 1;
-				len2--;
-			} else {
-				for(i = 0; i < howMany; i++){
-					result[len1-1-j+i] = temp[0];
-				}
-				len1 += howMany - 1;
+
+			for(k = len1-1; k > (len1-j-1); k--){
+				result[k+howMany-1] = result[k];
 			}
+
+			for(i = 0; i < howMany; i++){
+				result[len1-1-j+i] = tempC;
+			}
+			len1 += howMany - 1;
 		}
-		printf("inter result after expand: %s\n\n", result);
+		//printf("inter result after expand: %s\n\n", result);
 	}
+
+	//lastly, check if there are any repeated numerals and certain patterns that need to be reordered
+	while(reorder(result, mark, &len1) || RewriteRepeatedNemerals(&len1, result));
+	//printf("%s - %s = %s\n", num1, num2, result);
 	
-	//lastly, check if there are any repeated numerals
-	RewriteRepeatedNemerals(len1, result);
-	
-	printf("%s - %s = %s\n", num1, num2, result);
 	return result;
 }
